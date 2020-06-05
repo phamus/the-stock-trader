@@ -15,20 +15,17 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <router-link
-          to="/portfolio"
-          activeClass="active"
-          tag="li"
-          class="nav-item"
-          ><a class="nav-link"> Portfolio</a></router-link
-        >
-        <router-link to="/stocks" activeClass="active" tag="li" class="nav-item"
-          ><a class="nav-link"> Stocks</a></router-link
-        >
+        <router-link to="/portfolio" activeClass="active" tag="li" class="nav-item">
+          <a class="nav-link">Portfolio</a>
+        </router-link>
+        <router-link to="/stocks" activeClass="active" tag="li" class="nav-item">
+          <a class="nav-link">Stocks</a>
+        </router-link>
       </ul>
-      <ul class="navbar-nav justify-content-end">
+      <strong class="navbar-text navbar-right">Funds: {{funds | currency}}</strong>
+      <ul class="navbar-nav navbar-right">
         <li class="nav-item">
-          <a class="nav-link" href="#">End Day</a>
+          <a class="nav-link" href="#" @click="endDay">End Day</a>
         </li>
         <li class="nav-item dropdown">
           <a
@@ -39,9 +36,7 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-          >
-            Save & Load
-          </a>
+          >Save & Load</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="#">Save Data</a>
             <a class="dropdown-item" href="#">Load Data</a>
@@ -51,3 +46,20 @@
     </div>
   </nav>
 </template>
+
+<script>
+import { mapActions } from "vuex";
+export default {
+  computed: {
+    funds() {
+      return this.$store.getters.funds;
+    }
+  },
+  methods: {
+    ...mapActions({ randomizeStocks: "randomizeStocks" }),
+    endDay() {
+      this.randomizeStocks();
+    }
+  }
+};
+</script>
