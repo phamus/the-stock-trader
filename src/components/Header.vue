@@ -15,21 +15,33 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
-        <router-link to="/portfolio" activeClass="active" tag="li" class="nav-item">
+        <router-link
+          to="/portfolio"
+          activeClass="active"
+          tag="li"
+          class="nav-item"
+        >
           <a class="nav-link">Portfolio</a>
         </router-link>
-        <router-link to="/stocks" activeClass="active" tag="li" class="nav-item">
+        <router-link
+          to="/stocks"
+          activeClass="active"
+          tag="li"
+          class="nav-item"
+        >
           <a class="nav-link">Stocks</a>
         </router-link>
       </ul>
-      <strong class="navbar-text navbar-right">Funds: {{funds | currency}}</strong>
+      <strong class="navbar-text navbar-right"
+        >Funds: {{ funds | currency }}</strong
+      >
       <ul class="navbar-nav navbar-right">
         <li class="nav-item">
           <a class="nav-link" href="#" @click="endDay">End Day</a>
         </li>
         <li
           class="dropdown"
-          :class="{show: isDropdownOpen}"
+          :class="{ show: isDropdownOpen }"
           @click="isDropdownOpen = !isDropdownOpen"
         >
           <a
@@ -40,14 +52,15 @@
             data-toggle="dropdown"
             aria-haspopup="true"
             aria-expanded="false"
-          >Save & Load</a>
+            >Save & Load</a
+          >
           <div
             class="dropdown-menu"
-            :class="{show: isDropdownOpen}"
+            :class="{ show: isDropdownOpen }"
             aria-labelledby="navbarDropdown"
           >
-            <a class="dropdown-item" href="#">Save Data</a>
-            <a class="dropdown-item" href="#">Load Data</a>
+            <a class="dropdown-item" href="#" @click="saveData">Save Data</a>
+            <a class="dropdown-item" href="#" @click="loadData">Load Data</a>
           </div>
         </li>
       </ul>
@@ -60,19 +73,34 @@ import { mapActions } from "vuex";
 export default {
   data() {
     return {
-      isDropdownOpen: false
+      isDropdownOpen: false,
     };
   },
   computed: {
     funds() {
       return this.$store.getters.funds;
-    }
+    },
   },
   methods: {
-    ...mapActions({ randomizeStocks: "randomizeStocks" }),
+    ...mapActions({
+      randomizeStocks: "randomizeStocks",
+      fetchData: "loadData",
+    }),
     endDay() {
       this.randomizeStocks();
-    }
-  }
+    },
+    saveData() {
+      const data = {
+        funds: this.$store.getters.funds,
+        stocksPortfolio: this.$store.getters.stocksPortfolio,
+        stocks: this.$store.getters.stocks,
+      };
+      this.$http.put("data.json", data);
+    },
+
+    loadData() {
+      this.fetchData();
+    },
+  },
 };
 </script>
